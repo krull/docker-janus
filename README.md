@@ -48,6 +48,11 @@ root@mcroth:~/sandbox/docker-janus#
 A full set of default janus config files are in `./janus` folder. 
 
 ## build criteria
+`janus-gateway` is built with the following configured options diabled, as I do not have the need for them to be enabled by default:
+```
+./configure --prefix=/opt/janus --enable-post-processing --disable-rabbitmq --disable-docs --disable-mqtt --disable-boringssl
+```
+On future releases, I will include a way to build with toggle-able way to enable/disable plugins. Another approach is to enable everything, and disable unecessary plugins in the `janus.cfg` configuration file.
 ```
 DataChannels support:      yes
 BoringSSL (no OpenSSL):    no
