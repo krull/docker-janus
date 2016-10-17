@@ -1,4 +1,4 @@
-TEMPLATE_NAME ?= mcroth/janus-gateway
+TEMPLATE_NAME ?= mcroth/docker-janus
 
 run: image
 	docker run -ti -v $(CURDIR)/janus/etc/janus/:/opt/janus/etc/janus/ -v $(CURDIR)/janus/janus.log:/var/log/janus.log -p 0.0.0.0:8088:8088 -p 0.0.0.0:8188:8188 -t $(TEMPLATE_NAME)
