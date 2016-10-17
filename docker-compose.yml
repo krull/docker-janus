@@ -9,7 +9,7 @@ networks:
 services:
   janus-gateway:
     image: mcroth/docker-janus 
-    container_name: docker-janus
+    container_name: janus-gateway
     volumes:
       - ./janus/etc/janus/:/opt/janus/etc/janus/
       - ./janus/janus.log:/var/log/janus.log
