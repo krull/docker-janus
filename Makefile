@@ -1,16 +1,50 @@
-TEMPLATE_NAME ?= mcroth/docker-janus
+include env_make
+NS = mcroth
+VERSION ?= latest
 
-run: image
-	docker run -ti -v $(CURDIR)/janus/etc/janus/:/opt/janus/etc/janus/ -v $(CURDIR)/janus/janus.log:/var/log/janus.log -p 0.0.0.0:8088:8088 -p 0.0.0.0:8188:8188 -t $(TEMPLATE_NAME)
+REPO = docker-janus
+NAME = janus
+INSTANCE = jessie
 
-daemon: image
-	docker run -d -v $(CURDIR)/janus/etc/janus/:/opt/janus/etc/janus/ -v $(CURDIR)/janus/janus.log:/var/log/janus.log -p 0.0.0.0:8088:8088 -p 0.0.0.0:8188:8188 -t $(TEMPLATE_NAME)
+.PHONY: datachannels websockets boringssl mqtt rabbitmq build push shell run start stop rm release
 
-shell: image
-	docker run -v $(CURDIR)/janus/etc/janus/:/opt/janus/etc/janus/ -v $(CURDIR)/janus/janus.log:/var/log/janus.log -p 0.0.0.0:8088:8088 -p 0.0.0.0:8188:8188 -a stdin -a stdout -i -t $(TEMPLATE_NAME) /bin/bash
+boringssl:
+	docker build --build-arg JANUS_WITH_BORINGSSL=1 -t $(NS)/$(REPO):$(VERSION) .
 
-image:
-	docker build -t $(TEMPLATE_NAME) .
+mqtt:
+	docker build --build-arg JANUS_WITH_MQTT=1 -t $(NS)/$(REPO):$(VERSION) .
+
+rabbitmq:
+	docker build --build-arg JANUS_WITH_RABBITMQ=1 -t $(NS)/$(REPO):$(VERSION) .
+
+datachannels:
+	docker build --build-arg JANUS_WITH_DATACHANNELS=1 -t $(NS)/$(REPO):$(VERSION) .
+
+websockets:
+	docker build --build-arg JANUS_WITH_WEBSOCKETS=1 -t $(NS)/$(REPO):$(VERSION) .
+
+build:
+	docker build -t $(NS)/$(REPO):$(VERSION) .
+
+push:
+	docker push $(NS)/$(REPO):$(VERSION)
+
+shell:
+	docker run --rm --name $(NAME)-$(INSTANCE) -i -t $(PORTS) $(VOLUMES) $(ENV) $(NS)/$(REPO):$(VERSION) /bin/bash
+
+run:
+	docker run --rm --name $(NAME)-$(INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS)/$(REPO):$(VERSION)
+
+start:
+	docker run -d --name $(NAME)-$(INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS)/$(REPO):$(VERSION)
 
 stop:
-	docker ps | grep janus | cut -f1 -d' ' | xargs docker stop
+	docker stop $(NAME)-$(INSTANCE)
+
+rm:
+	docker rm $(NAME)-$(INSTANCE)
+
+release: build
+	make push -e VERSION=$(VERSION)
+
+default: build
