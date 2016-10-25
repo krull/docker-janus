@@ -47,10 +47,10 @@ root@mcroth:~/sandbox/docker-janus#
 
 Visiting `http://localhost:8080/janus/info` in your browser should provide you with the build info of janus in JSON format.
 
-A full set of default janus config files are in `./janus` folder. 
+A full set of default janus config files are in `./janus` folder, which is referenced as a volume in the `docker-compose.yml` file for docker-compose to use. 
 
 ## build criteria
-`janus-gateway` is built with the following configured options diabled, as I do not have the need for them to be enabled by default:
+`janus-gateway` is built with the following configured options disabled, as I do not have the need for them to be enabled by default:
 ```
 ./configure --prefix=/opt/janus --enable-post-processing --disable-docs --disable-boringssl --disable-mqtt --disable-rabbitmq
 ```
