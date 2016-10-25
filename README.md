@@ -6,14 +6,14 @@ All the janus docker builds I have seen in hub.docker.com were all ubuntu based 
 
 For the automated build go to [hub.docker.com](https://hub.docker.com/r/mcroth/docker-janus/)
 
-You can use these images directly from [hub.docker.com](https://hub.docker.com/r/mcroth/docker-janus/) by issuing the following docker commands:
+You can use this image directly from [hub.docker.com](https://hub.docker.com/r/mcroth/docker-janus/) by issuing the following docker commands:
 ```
 docker pull mcroth/docker-janus:latest
 ```
 
 Many thanks for [meetecho](http://www.meetecho.com) for providing us [Janus Gateway](https://github.com/meetecho/janus-gateway)!
 
-Docker best practices heavily inspired from [Damon Oehlman's ubuntu based docker image for janus](https://github.com/DamonOehlman/docker-janus).
+I have tried to build the image with docker best practices at hand. Should there be anything of note you notices, please do not hesitate to leave a comment!
 
 ## quickstart 
 ```

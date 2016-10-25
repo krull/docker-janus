@@ -1,0 +1,70 @@
+---------------------------------------------------
+  Starting Meetecho Janus (WebRTC Gateway) v0.2.1
+---------------------------------------------------
+
+Checking command line arguments...
+Debug/log level is 4
+Debug/log timestamps are disabled
+Debug/log colors are enabled
+Adding 'vmnet' to the ICE ignore list...
+Using 172.19.0.2 as local IP...
+[33m[WARN][0m Token based authentication disabled
+Initializing ICE stuff (Full mode, ICE-TCP candidates disabled, IPv6 support disabled)
+ICE handles watchdog started
+TURN REST API backend: (disabled)
+[33m[WARN][0m Janus is deployed on a private address (172.19.0.2) but you didn't specify any STUN server! Expect trouble if this is supposed to work over the internet and not just in a LAN...
+BUNDLE is NOT going to be forced
+rtcp-mux is NOT going to be forced
+[33m[WARN][0m OpenSSL pre-1.1.0
+Fingerprint of our certificate: D2:B9:31:8F:DF:24:D8:0E:ED:D2:EF:25:9E:AF:6F:B8:34:AE:53:9C:E6:F3:8F:F2:64:15:FA:E8:7F:53:2D:38
+Plugins folder: /opt/janus/lib/janus/plugins
+Sessions watchdog started
+Loading plugin 'libjanus_recordplay.so'...
+JANUS Record&Play plugin initialized!
+Record&Play watchdog started
+Loading plugin 'libjanus_videocall.so'...
+JANUS VideoCall plugin initialized!
+VideoCall watchdog started
+Loading plugin 'libjanus_textroom.so'...
+JANUS TextRoom plugin initialized!
+Loading plugin 'libjanus_streaming.so'...
+TextRoom watchdog started
+JANUS Streaming plugin initialized!
+Streaming watchdog started
+Loading plugin 'libjanus_voicemail.so'...
+JANUS VoiceMail plugin initialized!
+VoiceMail watchdog started
+Loading plugin 'libjanus_videoroom.so'...
+JANUS VideoRoom plugin initialized!
+VideoRoom watchdog started
+Loading plugin 'libjanus_echotest.so'...
+JANUS EchoTest plugin initialized!
+EchoTest watchdog started
+Loading plugin 'libjanus_audiobridge.so'...
+JANUS AudioBridge plugin initialized!
+AudioBridge watchdog started
+Loading plugin 'libjanus_sip.so'...
+JANUS SIP plugin initialized!
+Transport plugins folder: /opt/janus/lib/janus/transports
+SIP watchdog started
+Loading transport plugin 'libjanus_http.so'...
+HTTP webserver started (port 8088, /janus path listener)...
+[33m[WARN][0m HTTPS webserver disabled
+[33m[WARN][0m Admin/monitor HTTP webserver disabled
+[33m[WARN][0m Admin/monitor HTTPS webserver disabled
+JANUS REST (HTTP/HTTPS) transport plugin initialized!
+Loading transport plugin 'libjanus_pfunix.so'...
+HTTP/Janus sessions watchdog started
+Configuring SOCK_SEQPACKET Unix Sockets server (Janus API)
+[33m[WARN][0m Unix Sockets server disabled (Admin API)
+JANUS Unix Sockets transport plugin initialized!
+Loading transport plugin 'libjanus_websockets.so'...
+Unix Sockets thread started
+libwebsockets >= 1.6 available, using new API
+WebSockets server started (port 8188)...
+[33m[WARN][0m Secure WebSockets server disabled
+[33m[WARN][0m Admin WebSockets server disabled
+[33m[WARN][0m Secure Admin WebSockets server disabled
+JANUS WebSockets transport plugin initialized!
+WebSocket (Janus API) thread started
+[31m[ERR][0m [transports/janus_http.c:janus_http_handler:1092] Invalid url /favicon.ico
