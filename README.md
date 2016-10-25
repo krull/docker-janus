@@ -50,9 +50,12 @@ A full set of default janus config files are in `./janus` folder.
 ## build criteria
 `janus-gateway` is built with the following configured options diabled, as I do not have the need for them to be enabled by default:
 ```
-./configure --prefix=/opt/janus --enable-post-processing --disable-rabbitmq --disable-docs --disable-mqtt --disable-boringssl
+./configure --prefix=/opt/janus --enable-post-processing --disable-docs --disable-boringssl --disable-mqtt --disable-rabbitmq
 ```
-On future releases, I will include a way to build with toggle-able way to enable/disable plugins. Another approach is to enable everything, and disable unnecessary plugins in the `janus.cfg` configuration file.
+
+##default build
+There is a `Makefile`, with some directives on building janus. Have a look at that file and check the options. Issuing a `make` will run the default build with the options set below.
+
 ```
 DataChannels support:      yes
 BoringSSL (no OpenSSL):    no
@@ -76,3 +79,12 @@ Plugins:
     Record&Play:           yes
     Text Room:             yes
 ```
+
+##docker build `--build-arg`
+`--build-arg` provides away to override some build runtime arguments. Have a look at the `Dockerfile` for the `ARG` arguments to override.
+
+Example build with `rabbitmq`, `paho-mqtt`, `boringssl` enabled, and `data-channels` disabled:
+```
+root@mcroth:~/sandbox/docker-janus# docker build --build-arg JANUS_WITH_BORINGSSL=1 --build-arg JANUS_WITH_PAHOMQTT=1 --build-arg JANUS_WITH_RABBITMQ=1 --build-arg JANUS_WITH_DATACHANNELS=0 -t mcroth/docker-janus:latest .
+```
+
