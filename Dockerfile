@@ -14,21 +14,22 @@ ENV CONFIG_PATH="/opt/janus/etc/janus"
 
 # docker build arguments
 ARG BUILD_SRC="/usr/local/src"
+ARG JANUS_WITH_POSTPROCESSING="1"
 ARG JANUS_WITH_BORINGSSL="0"
+ARG JANUS_WITH_DOCS="0"
+ARG JANUS_WITH_REST="1"
 ARG JANUS_WITH_DATACHANNELS="1"
 ARG JANUS_WITH_WEBSOCKETS="1"
-ARG JANUS_WITH_PAHOMQTT="0"
+ARG JANUS_WITH_MQTT="0"
+ARG JANUS_WITH_PFUNIX="1"
 ARG JANUS_WITH_RABBITMQ="0"
 ARG JANUS_CONFIG_DEPS="\
     --prefix=/opt/janus \
     "
 ARG JANUS_CONFIG_OPTIONS="\
-    --enable-post-processing \
-    --disable-docs \
     "
 ARG JANUS_BUILD_DEPS_DEV="\
     libcurl4-openssl-dev \
-    libmicrohttpd-dev \
     libjansson-dev \
     libnice-dev \
     libssl-dev \
@@ -54,17 +55,25 @@ ARG JANUS_BUILD_DEPS_EXT="\
 
 RUN \
 # init build env & install apt deps
-    export JANUS_WITH_BORINGSSL="${JANUS_WITH_BORINGSSL}"\
+    export JANUS_WITH_POSTPROCESSING="${JANUS_WITH_POSTPROCESSING}"\
+    && export JANUS_WITH_BORINGSSL="${JANUS_WITH_BORINGSSL}"\
+    && export JANUS_WITH_DOCS="${JANUS_WITH_DOCS}"\
+    && export JANUS_WITH_REST="${JANUS_WITH_REST}"\
     && export JANUS_WITH_DATACHANNELS="${JANUS_WITH_DATACHANNELS}"\
     && export JANUS_WITH_WEBSOCKETS="${JANUS_WITH_WEBSOCKETS}"\
-    && export JANUS_WITH_PAHOMQTT="${JANUS_WITH_PAHOMQTT}"\
+    && export JANUS_WITH_MQTT="${JANUS_WITH_MQTT}"\
+    && export JANUS_WITH_PFUNIX="${JANUS_WITH_PFUNIX}"\
     && export JANUS_WITH_RABBITMQ="${JANUS_WITH_RABBITMQ}"\
     && export JANUS_BUILD_DEPS_DEV="${JANUS_BUILD_DEPS_DEV}"\
     && export JANUS_CONFIG_OPTIONS="${JANUS_CONFIG_OPTIONS}"\
-    && if [ $JANUS_WITH_BORINGSSL = "1" ]; then export JANUS_BUILD_DEPS_DEV="$JANUS_BUILD_DEPS_DEV golang-go" && export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --enable-boringssl"; fi \
+    && if [ $JANUS_WITH_POSTPROCESSING = "1" ]; then export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --enable-post-processing"; fi \
+    && if [ $JANUS_WITH_BORINGSSL = "1" ]; then export JANUS_BUILD_DEPS_DEV="$JANUS_BUILD_DEPS_DEV golang-go" && export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --enable-boringssl --enable-dtls-settimeout"; fi \
+    && if [ $JANUS_WITH_DOCS = "1" ]; then export JANUS_BUILD_DEPS_DEV="$JANUS_BUILD_DEPS_DEV doxygen graphviz" && export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --enable-docs"; fi \
+    && if [ $JANUS_WITH_REST = "1" ]; then export JANUS_BUILD_DEPS_DEV="$JANUS_BUILD_DEPS_DEV libmicrohttpd-dev"; else export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --disable-rest"; fi \
     && if [ $JANUS_WITH_DATACHANNELS = "0" ]; then export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --disable-data-channels"; fi \
     && if [ $JANUS_WITH_WEBSOCKETS = "0" ]; then export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --disable-websockets"; fi \
-    && if [ $JANUS_WITH_PAHOMQTT = "0" ]; then export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --disable-mqtt"; fi \
+    && if [ $JANUS_WITH_MQTT = "0" ]; then export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --disable-mqtt"; fi \
+    && if [ $JANUS_WITH_PFUNIX = "0" ]; then export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --disable-unix-sockets"; fi \
     && if [ $JANUS_WITH_RABBITMQ = "0" ]; then export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --disable-rabbitmq"; fi \
     && DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install $JANUS_BUILD_DEPS_DEV ${JANUS_BUILD_DEPS_EXT} \
@@ -107,7 +116,7 @@ RUN \
     && make install \
     ; fi \
 # build paho.mqtt.c
-    && if [ $JANUS_WITH_PAHOMQTT = "1" ]; then git clone https://github.com/eclipse/paho.mqtt.c.git ${BUILD_SRC}/paho.mqtt.c \
+    && if [ $JANUS_WITH_MQTT = "1" ]; then git clone https://github.com/eclipse/paho.mqtt.c.git ${BUILD_SRC}/paho.mqtt.c \
     && cd ${BUILD_SRC}/paho.mqtt.c \
     && make \
     && make install \
@@ -134,7 +143,7 @@ RUN \
     && if [ $JANUS_WITH_BORINGSSL = "1" ]; then rm -rf boringssl; fi \
     && if [ $JANUS_WITH_DATACHANNELS = "1" ]; then rm -rf usrsctp; fi \
     && if [ $JANUS_WITH_WEBSOCKETS = "1" ]; then rm -rf libwebsockets; fi \
-    && if [ $JANUS_WITH_PAHOMQTT = "1" ]; then rm -rf paho.mqtt.c; fi \
+    && if [ $JANUS_WITH_MQTT = "1" ]; then rm -rf paho.mqtt.c; fi \
     && if [ $JANUS_WITH_RABBITMQ = "1" ]; then rm -rf rabbitmq-c; fi \
     && rm -rf \
         v1.5.0.tar.gz \

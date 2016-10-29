@@ -6,22 +6,7 @@ REPO = docker-janus
 NAME = janus
 INSTANCE = jessie
 
-.PHONY: datachannels websockets boringssl mqtt rabbitmq build push shell run start stop rm release
-
-boringssl:
-	docker build --build-arg JANUS_WITH_BORINGSSL=1 -t $(NS)/$(REPO):$(VERSION) .
-
-mqtt:
-	docker build --build-arg JANUS_WITH_MQTT=1 -t $(NS)/$(REPO):$(VERSION) .
-
-rabbitmq:
-	docker build --build-arg JANUS_WITH_RABBITMQ=1 -t $(NS)/$(REPO):$(VERSION) .
-
-datachannels:
-	docker build --build-arg JANUS_WITH_DATACHANNELS=1 -t $(NS)/$(REPO):$(VERSION) .
-
-websockets:
-	docker build --build-arg JANUS_WITH_WEBSOCKETS=1 -t $(NS)/$(REPO):$(VERSION) .
+.PHONY: build push shell run start stop rm release
 
 build:
 	docker build -t $(NS)/$(REPO):$(VERSION) .
