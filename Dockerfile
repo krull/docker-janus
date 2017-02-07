@@ -75,6 +75,7 @@ RUN \
     && if [ $JANUS_WITH_MQTT = "0" ]; then export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --disable-mqtt"; fi \
     && if [ $JANUS_WITH_PFUNIX = "0" ]; then export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --disable-unix-sockets"; fi \
     && if [ $JANUS_WITH_RABBITMQ = "0" ]; then export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --disable-rabbitmq"; fi \
+    && /usr/sbin/groupadd -r janus && /usr/sbin/useradd -r -g janus janus \
     && DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install $JANUS_BUILD_DEPS_DEV ${JANUS_BUILD_DEPS_EXT} \
 # build libsrtp
@@ -139,6 +140,8 @@ RUN \
     && ./configure ${JANUS_CONFIG_DEPS} $JANUS_CONFIG_OPTIONS \
     && make \
     && make install \
+# folder ownership
+    && chown -R janus:janus /opt/janus \
 # build cleanup
     && cd ${BUILD_SRC} \
     && if [ $JANUS_WITH_BORINGSSL = "1" ]; then rm -rf boringssl; fi \
@@ -158,5 +161,7 @@ RUN \
     && rm -rf /var/cache/debconf/*-old \
     && rm -rf /usr/share/doc/* \
     && rm -rf /var/lib/apt/*
+
+USER janus
 
 CMD ["/opt/janus/bin/janus"]
