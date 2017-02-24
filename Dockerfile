@@ -15,7 +15,7 @@ ENV CONFIG_PATH="/opt/janus/etc/janus"
 # docker build arguments
 ARG BUILD_SRC="/usr/local/src"
 ARG JANUS_WITH_POSTPROCESSING="1"
-ARG JANUS_WITH_BORINGSSL="1"
+ARG JANUS_WITH_BORINGSSL="0"
 ARG JANUS_WITH_DOCS="0"
 ARG JANUS_WITH_REST="1"
 ARG JANUS_WITH_DATACHANNELS="1"
@@ -79,11 +79,11 @@ RUN \
     && DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install $JANUS_BUILD_DEPS_DEV ${JANUS_BUILD_DEPS_EXT} \
 # build libsrtp
-    && curl -fSL https://github.com/cisco/libsrtp/archive/v1.5.0.tar.gz -o ${BUILD_SRC}/v1.5.0.tar.gz \
-    && tar xzf ${BUILD_SRC}/v1.5.0.tar.gz -C ${BUILD_SRC} \
-    && cd ${BUILD_SRC}/libsrtp-1.5.0 \
+    && curl -fSL https://github.com/cisco/libsrtp/archive/v2.0.0.tar.gz -o ${BUILD_SRC}/v2.0.0.tar.gz \
+    && tar xzf ${BUILD_SRC}/v2.0.0.tar.gz -C ${BUILD_SRC} \
+    && cd ${BUILD_SRC}/libsrtp-2.0.0 \
     && ./configure --prefix=/usr --enable-openssl \
-    && make libsrtp.so \
+    && make shared_library \
     && make install \
 # build boringssl
     && if [ $JANUS_WITH_BORINGSSL = "1" ]; then git clone https://boringssl.googlesource.com/boringssl ${BUILD_SRC}/boringssl \
