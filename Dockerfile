@@ -23,6 +23,7 @@ ARG JANUS_WITH_WEBSOCKETS="1"
 ARG JANUS_WITH_MQTT="0"
 ARG JANUS_WITH_PFUNIX="1"
 ARG JANUS_WITH_RABBITMQ="0"
+ARG JANUS_WITH_FREESWITCH_PATCH="0"
 ARG JANUS_CONFIG_DEPS="\
     --prefix=/opt/janus \
     "
@@ -64,6 +65,7 @@ RUN \
     && export JANUS_WITH_MQTT="${JANUS_WITH_MQTT}"\
     && export JANUS_WITH_PFUNIX="${JANUS_WITH_PFUNIX}"\
     && export JANUS_WITH_RABBITMQ="${JANUS_WITH_RABBITMQ}"\
+    && export JANUS_WITH_FREESWITCH_PATCH="${JANUS_WITH_FREESWITCH_PATCH}"\
     && export JANUS_BUILD_DEPS_DEV="${JANUS_BUILD_DEPS_DEV}"\
     && export JANUS_CONFIG_OPTIONS="${JANUS_CONFIG_OPTIONS}"\
     && if [ $JANUS_WITH_POSTPROCESSING = "1" ]; then export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --enable-post-processing"; fi \
@@ -135,6 +137,7 @@ RUN \
     ; fi \
 # build janus-gateway
     && git clone https://github.com/meetecho/janus-gateway.git ${BUILD_SRC}/janus-gateway \
+    && if [ $JANUS_WITH_FREESWITCH_PATCH = "1" ]; then curl -fSL https://raw.githubusercontent.com/krull/docker-misc/master/init_fs/tmp/janus_sip.c.patch -o ${BUILD_SRC}/janus-gateway/plugins/janus_sip.c.patch && cd ${BUILD_SRC}/janus-gateway/plugins && patch < janus_sip.c.patch; fi \
     && cd ${BUILD_SRC}/janus-gateway \
     && ./autogen.sh \
     && ./configure ${JANUS_CONFIG_DEPS} $JANUS_CONFIG_OPTIONS \
