@@ -45,7 +45,7 @@ mcroth/docker-janus   latest              1dd697edcb76        23 minutes ago    
 root@mcroth:~/sandbox/docker-janus# 
 ```
 
-Visiting `http://localhost:8080/janus/info` in your browser should provide you with the build info of janus in JSON format.
+Visiting `http://localhost:8088/janus/info` in your browser should provide you with the build info of janus in JSON format.
 
 A full set of default janus config files are in `./janus` folder, which is referenced as a volume in the `docker-compose.yml` file for docker-compose to use. 
 
