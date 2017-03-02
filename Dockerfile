@@ -23,7 +23,9 @@ ARG JANUS_WITH_WEBSOCKETS="1"
 ARG JANUS_WITH_MQTT="0"
 ARG JANUS_WITH_PFUNIX="1"
 ARG JANUS_WITH_RABBITMQ="0"
-ARG JANUS_WITH_FREESWITCH_PATCH="0"
+ 
+ARG JANUS_WITH_FREESWITCH_PATCH="0" #https://goo.gl/dmbvc1
+
 ARG JANUS_CONFIG_DEPS="\
     --prefix=/opt/janus \
     "
@@ -104,6 +106,7 @@ RUN \
 # build usrsctp
     && if [ $JANUS_WITH_DATACHANNELS = "1" ]; then git clone https://github.com/sctplab/usrsctp ${BUILD_SRC}/usrsctp \
     && cd ${BUILD_SRC}/usrsctp \
+    && git checkout d5f916d2a42606a7660384e8cbc9a05a933815b4 \
     && ./bootstrap \
     && ./configure --prefix=/usr \
     && make \
