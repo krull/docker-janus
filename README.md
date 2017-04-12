@@ -11,6 +11,8 @@ You can use this image directly from [hub.docker.com](https://hub.docker.com/r/m
 docker pull mcroth/docker-janus:latest
 ```
 
+UPDATE: Added a new branch with `tklx/base` as the build image which drastically reduces the docker image size. Both `latest` and `tklx` tags are available from the [hub](https://hub.docker.com/r/mcroth/docker-janus/).
+
 Many thanks for [meetecho](http://www.meetecho.com) for providing us [Janus Gateway](https://github.com/meetecho/janus-gateway)!
 
 I have tried to build the image with docker best practices at hand. Should there be anything of note you notices, please do not hesitate to leave a comment!
