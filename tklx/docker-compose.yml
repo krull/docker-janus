@@ -8,11 +8,11 @@ networks:
 
 services:
   janus-gateway:
-    image: mcroth/docker-janus:latest 
+    image: mcroth/docker-janus:tklx 
     container_name: janus-gateway
     volumes:
-      - ./janus/etc/janus/:/opt/janus/etc/janus/
-      - ./janus/janus.log:/var/log/janus.log
+      - ../janus/etc/janus/:/opt/janus/etc/janus/
+      - ../janus/janus.log:/var/log/janus.log
     ports:
       - 8088:8088
       - 8188:8188
