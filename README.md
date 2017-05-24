@@ -55,7 +55,7 @@ A full set of default janus config files are in `./janus` folder, which is refer
 ./configure --prefix=/opt/janus --enable-post-processing --disable-docs --disable-boringssl --disable-mqtt --disable-rabbitmq
 ```
 
-##default build
+## default build
 There is a `Makefile`, with some directives on building janus. Have a look at that file and check the options. Issuing a `make` will run the default build with the options set below.
 
 ```
@@ -82,7 +82,7 @@ Plugins:
     Text Room:             yes
 ```
 
-##docker build `--build-arg`
+## docker build `--build-arg`
 `--build-arg` provides away to override some build runtime arguments. Have a look at the `Dockerfile` for the `ARG` arguments to override.
 
 Example build with `rabbitmq`, `paho-mqtt`, `boringssl` enabled, and `data-channels` disabled:
