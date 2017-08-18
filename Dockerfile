@@ -154,8 +154,8 @@ RUN \
     && if [ $JANUS_WITH_MQTT = "1" ]; then rm -rf paho.mqtt.c; fi \
     && if [ $JANUS_WITH_RABBITMQ = "1" ]; then rm -rf rabbitmq-c; fi \
     && rm -rf \
-        v1.5.0.tar.gz \
-        libsrtp-1.5.0 \
+        v2.0.0.tar.gz \
+        libsrtp-2.0.0 \
         janus-gateway \
     && DEBIAN_FRONTEND=noninteractive apt-get -y --auto-remove purge ${JANUS_BUILD_DEPS_EXT} \
     && DEBIAN_FRONTEND=noninteractive apt-get -y clean \
