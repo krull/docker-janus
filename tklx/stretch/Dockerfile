@@ -4,7 +4,7 @@
 ############################################################
 
 # set base image debian jessie
-FROM tklx/base:0.1.1 
+FROM tklx/base:stretch 
 
 # file maintainer author
 MAINTAINER brendan jocson <brendan@jocson.eu>
@@ -113,7 +113,7 @@ RUN \
 # build libwebsockets
     && if [ $JANUS_WITH_WEBSOCKETS = "1" ]; then git clone https://github.com/warmcat/libwebsockets.git ${BUILD_SRC}/libwebsockets \
     && cd ${BUILD_SRC}/libwebsockets \
-    && git checkout v1.5-chrome47-firefox41 \
+#    && git checkout v1.5-chrome47-firefox41 \
     && mkdir ${BUILD_SRC}/libwebsockets/build \
     && cd ${BUILD_SRC}/libwebsockets/build \
     && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-fpic" .. \

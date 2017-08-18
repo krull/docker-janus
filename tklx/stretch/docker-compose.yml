@@ -1,0 +1,21 @@
+version: '2'
+
+networks:
+  front-tier:
+    driver: bridge
+  back-tier:
+    driver: bridge
+
+services:
+  janus-gateway:
+    image: mcroth/docker-janus:tklx-stretch 
+    container_name: janus-gateway
+    volumes:
+      - ../janus/etc/janus/:/opt/janus/etc/janus/
+      - ../janus/janus.log:/var/log/janus.log
+    ports:
+      - 8088:8088
+      - 8188:8188
+    networks:
+      - back-tier
+      - front-tier
