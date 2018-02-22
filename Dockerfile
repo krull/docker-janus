@@ -119,7 +119,6 @@ RUN \
     && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-fpic" .. \
     && make \
     && make install \
-    && make configs \
     ; fi \
 # build paho.mqtt.c
     && if [ $JANUS_WITH_MQTT = "1" ]; then git clone https://github.com/eclipse/paho.mqtt.c.git ${BUILD_SRC}/paho.mqtt.c \
@@ -145,6 +144,7 @@ RUN \
     && ./configure ${JANUS_CONFIG_DEPS} $JANUS_CONFIG_OPTIONS \
     && make \
     && make install \
+    && make configs \
 # folder ownership
     && chown -R janus:janus /opt/janus \
 # build cleanup
