@@ -144,6 +144,7 @@ RUN \
     && ./configure ${JANUS_CONFIG_DEPS} $JANUS_CONFIG_OPTIONS \
     && make \
     && make install \
+    && make configs \
 # folder ownership
     && chown -R janus:janus /opt/janus \
 # build cleanup
