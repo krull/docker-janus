@@ -1,10 +1,10 @@
 ############################################################
-# Dockerfile - Janus Gateway on Debian Jessie
+# Dockerfile - Janus Gateway on Debian Stretch
 # https://github.com/krull/docker-janus
 ############################################################
 
 # set base image debian jessie
-FROM debian:jessie
+FROM debian:stretch
 
 # file maintainer author
 MAINTAINER brendan jocson <brendan@jocson.eu>
@@ -39,6 +39,7 @@ ARG JANUS_BUILD_DEPS_DEV="\
     libglib2.0-dev \
     libopus-dev \
     libogg-dev \
+    liblua5.3-dev \
     pkg-config \
     "
 ARG JANUS_BUILD_DEPS_EXT="\
@@ -82,9 +83,9 @@ RUN \
     && DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install $JANUS_BUILD_DEPS_DEV ${JANUS_BUILD_DEPS_EXT} \
 # build libsrtp
-    && curl -fSL https://github.com/cisco/libsrtp/archive/v2.0.0.tar.gz -o ${BUILD_SRC}/v2.0.0.tar.gz \
-    && tar xzf ${BUILD_SRC}/v2.0.0.tar.gz -C ${BUILD_SRC} \
-    && cd ${BUILD_SRC}/libsrtp-2.0.0 \
+    && curl -fSL https://github.com/cisco/libsrtp/archive/v2.1.0.tar.gz -o ${BUILD_SRC}/v2.1.0.tar.gz \
+    && tar xzf ${BUILD_SRC}/v2.1.0.tar.gz -C ${BUILD_SRC} \
+    && cd ${BUILD_SRC}/libsrtp-2.1.0 \
     && ./configure --prefix=/usr --enable-openssl \
     && make shared_library \
     && make install \
