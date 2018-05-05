@@ -1,5 +1,6 @@
 # docker-janus
 `docker-janus` is a Debian 8 based docker image for [Meetecho's Janus Gateway](https://github.com/meetecho/janus-gateway)
+`docker-janus` is a Debian 9 based docker image for [Meetecho's Janus Gateway](https://github.com/meetecho/janus-gateway)
 
 ## Description
 All the janus docker builds I have seen in hub.docker.com were all ubuntu based and/or of some redhat flavor. I successfully build janus in debian 7 and 8 before, so I thought it would be a good way to practice docker best practices and provide a debian based image at the same time.
