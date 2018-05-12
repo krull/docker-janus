@@ -29,6 +29,7 @@ ARG JANUS_CONFIG_DEPS="\
     --prefix=/opt/janus \
     "
 ARG JANUS_CONFIG_OPTIONS="\
+    --disable-plugin-lua \
     "
 ARG JANUS_BUILD_DEPS_DEV="\
     libcurl4-openssl-dev \
