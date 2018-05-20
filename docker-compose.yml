@@ -12,7 +12,7 @@ services:
     container_name: janus-gateway
     volumes:
       - ./janus/etc/janus/:/opt/janus/etc/janus/
-      - ./janus/janus.log:/opt/janus/janus.log
+      - ./janus/janus.log:/opt/janus/log/janus.log
     ports:
       - 8088:8088
       - 8188:8188
