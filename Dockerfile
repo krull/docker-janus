@@ -1,13 +1,13 @@
 ############################################################
-# Dockerfile - Janus Gateway on Debian Jessie
+# Dockerfile - Janus Gateway on Debian Buster
 # https://github.com/krull/docker-janus
 ############################################################
 
-# set base image debian jessie
-FROM debian:jessie
+# set base image debian buster with minimal packages installed
+FROM debian:buster-slim
 
 # file maintainer author
-MAINTAINER brendan jocson <brendan@jocson.eu>
+MAINTAINER Christophe Kamphaus <christophe.kamphaus@jemmic.com>
 
 # docker build environments
 ENV CONFIG_PATH="/opt/janus/etc/janus"
