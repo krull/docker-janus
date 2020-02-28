@@ -8,6 +8,7 @@ FROM debian:buster-slim
 
 # file maintainer author
 MAINTAINER Christophe Kamphaus <christophe.kamphaus@jemmic.com>
+LABEL maintainer="Christophe Kamphaus <christophe.kamphaus@jemmic.com>"
 
 # docker build environments
 ENV CONFIG_PATH="/opt/janus/etc/janus"
