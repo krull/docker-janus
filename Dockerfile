@@ -118,7 +118,7 @@ RUN \
     && git checkout v3.2.2 \
     && mkdir ${BUILD_SRC}/libwebsockets/build \
     && cd ${BUILD_SRC}/libwebsockets/build \
-    && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-fpic" .. \
+    && cmake -DLWS_MAX_SMP=1 -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-fpic" .. \
     && make \
     && make install \
     ; fi \
