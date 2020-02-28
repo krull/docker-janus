@@ -16,6 +16,7 @@ ENV CONFIG_PATH="/opt/janus/etc/janus"
 ARG BUILD_SRC="/usr/local/src"
 
 ARG JANUS_VERSION="v0.9.0"
+ARG JANUS_LIBNICE_VERSION="0.1.16"
 ARG JANUS_LIBSRTP_VERSION="2.3.0"
 ARG JANUS_LIBWEBSOCKETS_VERSION="v3.2.2"
 
@@ -90,6 +91,14 @@ RUN \
     && /usr/sbin/groupadd -r janus && /usr/sbin/useradd -r -g janus janus \
     && DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install $JANUS_BUILD_DEPS_DEV ${JANUS_BUILD_DEPS_EXT} \
+# build libnice
+    && git clone https://gitlab.freedesktop.org/libnice/libnice ${BUILD_SRC}/libnice \
+    && cd ${BUILD_SRC}/libnice \
+    && git checkout ${JANUS_LIBNICE_VERSION} \
+    && ./autogen.sh \
+    && ./configure --prefix=/usr \
+    && make \
+    && make install \
 # build libsrtp
     && curl -fSL https://github.com/cisco/libsrtp/archive/v${JANUS_LIBSRTP_VERSION}.tar.gz -o ${BUILD_SRC}/v${JANUS_LIBSRTP_VERSION}.tar.gz \
     && tar xzf ${BUILD_SRC}/v${JANUS_LIBSRTP_VERSION}.tar.gz -C ${BUILD_SRC} \
