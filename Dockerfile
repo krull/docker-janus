@@ -84,9 +84,9 @@ RUN \
     && DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install $JANUS_BUILD_DEPS_DEV ${JANUS_BUILD_DEPS_EXT} \
 # build libsrtp
-    && curl -fSL https://github.com/cisco/libsrtp/archive/v2.0.0.tar.gz -o ${BUILD_SRC}/v2.0.0.tar.gz \
-    && tar xzf ${BUILD_SRC}/v2.0.0.tar.gz -C ${BUILD_SRC} \
-    && cd ${BUILD_SRC}/libsrtp-2.0.0 \
+    && curl -fSL https://github.com/cisco/libsrtp/archive/v2.3.0.tar.gz -o ${BUILD_SRC}/v2.3.0.tar.gz \
+    && tar xzf ${BUILD_SRC}/v2.3.0.tar.gz -C ${BUILD_SRC} \
+    && cd ${BUILD_SRC}/libsrtp-2.3.0 \
     && ./configure --prefix=/usr --enable-openssl \
     && make shared_library \
     && make install \
@@ -157,8 +157,8 @@ RUN \
     && if [ $JANUS_WITH_MQTT = "1" ]; then rm -rf paho.mqtt.c; fi \
     && if [ $JANUS_WITH_RABBITMQ = "1" ]; then rm -rf rabbitmq-c; fi \
     && rm -rf \
-        v2.0.0.tar.gz \
-        libsrtp-2.0.0 \
+        v2.3.0.tar.gz \
+        libsrtp-2.3.0 \
         janus-gateway \
     && DEBIAN_FRONTEND=noninteractive apt-get -y --auto-remove purge ${JANUS_BUILD_DEPS_EXT} \
     && DEBIAN_FRONTEND=noninteractive apt-get -y clean \
