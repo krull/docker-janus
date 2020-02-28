@@ -14,6 +14,7 @@ ENV CONFIG_PATH="/opt/janus/etc/janus"
 
 # docker build arguments
 ARG BUILD_SRC="/usr/local/src"
+ARG JANUS_VERSION="v0.9.0"
 ARG JANUS_WITH_POSTPROCESSING="1"
 ARG JANUS_WITH_BORINGSSL="0"
 ARG JANUS_WITH_DOCS="0"
@@ -140,6 +141,7 @@ RUN \
     && git clone https://github.com/meetecho/janus-gateway.git ${BUILD_SRC}/janus-gateway \
     && if [ $JANUS_WITH_FREESWITCH_PATCH = "1" ]; then curl -fSL https://raw.githubusercontent.com/krull/docker-misc/master/init_fs/tmp/janus_sip.c.patch -o ${BUILD_SRC}/janus-gateway/plugins/janus_sip.c.patch && cd ${BUILD_SRC}/janus-gateway/plugins && patch < janus_sip.c.patch; fi \
     && cd ${BUILD_SRC}/janus-gateway \
+    && git checkout ${JANUS_VERSION} \
     && ./autogen.sh \
     && ./configure ${JANUS_CONFIG_DEPS} $JANUS_CONFIG_OPTIONS \
     && make \
