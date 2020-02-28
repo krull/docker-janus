@@ -1,10 +1,10 @@
 include env_make
-NS = mcroth
+NS = jemmic
 VERSION ?= latest
 
-REPO = docker-janus
+REPO = janus-gateway
 NAME = janus
-INSTANCE = jessie
+INSTANCE = buster
 
 .PHONY: build push shell run start stop rm release
 
