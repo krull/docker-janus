@@ -14,7 +14,11 @@ ENV CONFIG_PATH="/opt/janus/etc/janus"
 
 # docker build arguments
 ARG BUILD_SRC="/usr/local/src"
+
 ARG JANUS_VERSION="v0.9.0"
+ARG JANUS_LIBSRTP_VERSION="2.3.0"
+ARG JANUS_LIBWEBSOCKETS_VERSION="v3.2.2"
+
 ARG JANUS_WITH_POSTPROCESSING="1"
 ARG JANUS_WITH_BORINGSSL="0"
 ARG JANUS_WITH_DOCS="0"
@@ -71,6 +75,9 @@ RUN \
     && export JANUS_WITH_FREESWITCH_PATCH="${JANUS_WITH_FREESWITCH_PATCH}"\
     && export JANUS_BUILD_DEPS_DEV="${JANUS_BUILD_DEPS_DEV}"\
     && export JANUS_CONFIG_OPTIONS="${JANUS_CONFIG_OPTIONS}"\
+    && export JANUS_VERSION="${JANUS_VERSION}"\
+    && export JANUS_LIBSRTP_VERSION="${JANUS_LIBSRTP_VERSION}"\
+    && export JANUS_LIBWEBSOCKETS_VERSION="${JANUS_LIBWEBSOCKETS_VERSION}"\
     && if [ $JANUS_WITH_POSTPROCESSING = "1" ]; then export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --enable-post-processing"; fi \
     && if [ $JANUS_WITH_BORINGSSL = "1" ]; then export JANUS_BUILD_DEPS_DEV="$JANUS_BUILD_DEPS_DEV golang-go" && export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --enable-boringssl --enable-dtls-settimeout"; fi \
     && if [ $JANUS_WITH_DOCS = "1" ]; then export JANUS_BUILD_DEPS_DEV="$JANUS_BUILD_DEPS_DEV doxygen graphviz gtk-doc-tools" && export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --enable-docs"; fi \
@@ -84,9 +91,9 @@ RUN \
     && DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install $JANUS_BUILD_DEPS_DEV ${JANUS_BUILD_DEPS_EXT} \
 # build libsrtp
-    && curl -fSL https://github.com/cisco/libsrtp/archive/v2.3.0.tar.gz -o ${BUILD_SRC}/v2.3.0.tar.gz \
-    && tar xzf ${BUILD_SRC}/v2.3.0.tar.gz -C ${BUILD_SRC} \
-    && cd ${BUILD_SRC}/libsrtp-2.3.0 \
+    && curl -fSL https://github.com/cisco/libsrtp/archive/v${JANUS_LIBSRTP_VERSION}.tar.gz -o ${BUILD_SRC}/v${JANUS_LIBSRTP_VERSION}.tar.gz \
+    && tar xzf ${BUILD_SRC}/v${JANUS_LIBSRTP_VERSION}.tar.gz -C ${BUILD_SRC} \
+    && cd ${BUILD_SRC}/libsrtp-${JANUS_LIBSRTP_VERSION} \
     && ./configure --prefix=/usr --enable-openssl \
     && make shared_library \
     && make install \
@@ -115,7 +122,7 @@ RUN \
 # build libwebsockets
     && if [ $JANUS_WITH_WEBSOCKETS = "1" ]; then git clone https://github.com/warmcat/libwebsockets.git ${BUILD_SRC}/libwebsockets \
     && cd ${BUILD_SRC}/libwebsockets \
-    && git checkout v3.2.2 \
+    && git checkout ${JANUS_LIBWEBSOCKETS_VERSION} \
     && mkdir ${BUILD_SRC}/libwebsockets/build \
     && cd ${BUILD_SRC}/libwebsockets/build \
     && cmake -DLWS_MAX_SMP=1 -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-fpic" .. \
@@ -157,8 +164,8 @@ RUN \
     && if [ $JANUS_WITH_MQTT = "1" ]; then rm -rf paho.mqtt.c; fi \
     && if [ $JANUS_WITH_RABBITMQ = "1" ]; then rm -rf rabbitmq-c; fi \
     && rm -rf \
-        v2.3.0.tar.gz \
-        libsrtp-2.3.0 \
+        v${JANUS_LIBSRTP_VERSION}.tar.gz \
+        libsrtp-${JANUS_LIBSRTP_VERSION} \
         janus-gateway \
     && DEBIAN_FRONTEND=noninteractive apt-get -y --auto-remove purge ${JANUS_BUILD_DEPS_EXT} \
     && DEBIAN_FRONTEND=noninteractive apt-get -y clean \
