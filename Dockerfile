@@ -38,6 +38,8 @@ ARG JANUS_BUILD_DEPS_DEV="\
     libssl-dev \
     libsofia-sip-ua-dev \
     libglib2.0-dev \
+    liblua5.3-dev \
+    libconfig-dev \
     libopus-dev \
     libogg-dev \
     pkg-config \
