@@ -52,24 +52,24 @@ A full set of default janus config files are in `./janus` folder, which is refer
 ## build criteria
 `janus-gateway` is built with the following configured options disabled, as I do not have the need for them to be enabled by default:
 ```
-./configure --prefix=/opt/janus --enable-post-processing --disable-docs --disable-boringssl --disable-mqtt --disable-rabbitmq
+./configure --prefix=/opt/janus --enable-post-processing --disable-docs --enable-boringssl --enable-dtls-settimeout --disable-data-channels --disable-websockets --disable-mqtt --disable-unix-sockets --disable-rabbitmq
 ```
 
 ## default build
 There is a `Makefile`, with some directives on building janus. Have a look at that file and check the options. Issuing a `make` will run the default build with the options set below.
 
 ```
-DataChannels support:      yes
-BoringSSL (no OpenSSL):    no
+DataChannels support:      no
+BoringSSL (no OpenSSL):    yes
 Recordings post-processor: yes
 TURN REST API client:      yes
 Doxygen documentation:     no
 Transports:
     REST (HTTP/HTTPS):     yes
-    WebSockets:            yes (new API)
+    WebSockets:            no (new API)
     RabbitMQ:              no
     MQTT:                  no
-    Unix Sockets:          yes
+    Unix Sockets:          no
 Plugins:
     Echo Test:             yes
     Streaming:             yes
@@ -85,8 +85,8 @@ Plugins:
 ## docker build `--build-arg`
 `--build-arg` provides away to override some build runtime arguments. Have a look at the `Dockerfile` for the `ARG` arguments to override.
 
-Example build with `rabbitmq`, `paho-mqtt`, `boringssl` enabled, and `data-channels` disabled:
+Example build with `rabbitmq`, `paho-mqtt`, `data-channels` enabled, and `boringssl` disabled:
 ```
-root@mcroth:~/sandbox/docker-janus# docker build --build-arg JANUS_WITH_BORINGSSL=1 --build-arg JANUS_WITH_PAHOMQTT=1 --build-arg JANUS_WITH_RABBITMQ=1 --build-arg JANUS_WITH_DATACHANNELS=0 -t mcroth/docker-janus:latest .
+$ docker build --build-arg JANUS_WITH_PAHOMQTT=1 --build-arg JANUS_WITH_RABBITMQ=1 --build-arg JANUS_WITH_DATACHANNELS=1 --build-arg JANUS_WITH_BORINGSSL=0 -t mcroth/docker-janus:latest .
 ```
 
