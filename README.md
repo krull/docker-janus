@@ -11,40 +11,38 @@ You can use this image directly from [hub.docker.com](https://hub.docker.com/r/m
 docker pull mcroth/docker-janus:latest
 ```
 
-UPDATE: Added a new branch with `tklx/base` as the build image which drastically reduces the docker image size. Both `latest` and `tklx` tags are available from the [hub](https://hub.docker.com/r/mcroth/docker-janus/).
-
 Many thanks for [meetecho](http://www.meetecho.com) for providing us [Janus Gateway](https://github.com/meetecho/janus-gateway)!
 
 I have tried to build the image with docker best practices at hand. Should there be anything of note you notices, please do not hesitate to leave a comment!
 
 ## quickstart 
 ```
-root@mcroth:~/sandbox# git clone https://github.com/krull/docker-janus.git
+$ git clone https://github.com/jemmic/docker-janus.git
 Cloning into 'docker-janus'...
 remote: Counting objects: 69, done.
 remote: Compressing objects: 100% (53/53), done.
 remote: Total 69 (delta 19), reused 59 (delta 13), pack-reused 0
 Unpacking objects: 100% (69/69), done.
 Checking connectivity... done.
-root@mcroth:~/sandbox# cd docker-janus/
-root@mcroth:~/sandbox/docker-janus# docker-compose up -d
+$ cd docker-janus/
+$ docker-compose up -d
 Creating network "dockerjanus_front-tier" with driver "bridge"
 Creating network "dockerjanus_back-tier" with driver "bridge"
-Pulling janus-gateway (mcroth/docker-janus:latest)...
-latest: Pulling from mcroth/docker-janus
+Pulling janus-gateway (jemmic/docker-janus:latest)...
+latest: Pulling from jemmic/docker-janus
 43c265008fae: Pull complete
 9ee7f339f682: Pull complete
 Digest: sha256:2ad4234b7255b52150d06ac231edff635102fa47c90f714b66ae37885f9f64d3
-Status: Downloaded newer image for mcroth/docker-janus:latest
+Status: Downloaded newer image for jemmic/docker-janus:latest
 Creating janus-gateway
-root@mcroth:~/sandbox/docker-janus# docker-compose ps
+$ docker-compose ps
     Name              Command          State                       Ports                      
 ---------------------------------------------------------------------------------------------
 janus-gateway   /opt/janus/bin/janus   Up      0.0.0.0:8088->8088/tcp, 0.0.0.0:8188->8188/tcp 
-root@mcroth:~/sandbox/docker-janus# docker images
+$ docker images
 REPOSITORY            TAG                 IMAGE ID            CREATED             SIZE
-mcroth/docker-janus   latest              1dd697edcb76        23 minutes ago      232.9 MB
-root@mcroth:~/sandbox/docker-janus# 
+jemmic/docker-janus   latest              1dd697edcb76        23 minutes ago      232.9 MB
+$ 
 ```
 
 Visiting `http://localhost:8088/janus/info` in your browser should provide you with the build info of janus in JSON format.

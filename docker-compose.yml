@@ -8,7 +8,7 @@ networks:
 
 services:
   janus-gateway:
-    image: mcroth/docker-janus:latest 
+    image: jemmic/docker-janus:latest
     container_name: janus-gateway
     volumes:
       - ./janus/etc/janus/:/opt/janus/etc/janus/

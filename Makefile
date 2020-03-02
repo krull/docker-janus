@@ -2,7 +2,7 @@ include env_make
 NS = jemmic
 VERSION ?= latest
 
-REPO = janus-gateway
+REPO = docker-janus
 NAME = janus
 INSTANCE = buster
 
