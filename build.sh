@@ -91,10 +91,10 @@ if [ $JANUS_WITH_RABBITMQ = "1" ]; then
     git checkout ${JANUS_RABBITMQ_VERSION}
     git submodule init
     git submodule update
-    autoreconf -i
-    ./configure --prefix=/usr
-    make
-    make install
+    mkdir ${BUILD_SRC}/rabbitmq-c/build
+    cd ${BUILD_SRC}/rabbitmq-c/build
+    cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+    cmake --build . --target install
 fi
 
 # build janus-gateway
