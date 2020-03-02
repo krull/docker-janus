@@ -2,7 +2,6 @@
 
 # use bash strict mode
 set -euo pipefail
-IFS=$'\n\t'
 
 # init build env & install apt deps
 if [ $JANUS_WITH_POSTPROCESSING = "1" ]; then export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --enable-post-processing"; fi
