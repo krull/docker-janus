@@ -70,4 +70,13 @@ RUN /tmp/build.sh \
 
 USER janus
 
+# exposed ports
+EXPOSE 10000-10200/udp
+EXPOSE 8088
+EXPOSE 8089
+EXPOSE 8889
+EXPOSE 8000
+EXPOSE 7088
+EXPOSE 7089
+
 CMD ["/opt/janus/bin/janus"]
