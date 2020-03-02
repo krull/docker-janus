@@ -6,7 +6,7 @@ set -euo pipefail
 # init build env & install apt deps
 if [ $JANUS_WITH_POSTPROCESSING = "1" ]; then export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --enable-post-processing"; fi
 if [ $JANUS_WITH_BORINGSSL = "1" ]; then export JANUS_BUILD_DEPS_DEV="$JANUS_BUILD_DEPS_DEV golang-go" && export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --enable-boringssl --enable-dtls-settimeout"; fi
-if [ $JANUS_WITH_DOCS = "1" ]; then export JANUS_BUILD_DEPS_DEV="$JANUS_BUILD_DEPS_DEV doxygen graphviz" && export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --enable-docs"; fi
+if [ $JANUS_WITH_DOCS = "1" ]; then export JANUS_BUILD_DEPS_DEV="$JANUS_BUILD_DEPS_DEV graphviz" && export JANUS_BUILD_DEPS_EXT="$JANUS_BUILD_DEPS_EXT file sensible-utils" && export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --enable-docs"; fi
 if [ $JANUS_WITH_REST = "1" ]; then export JANUS_BUILD_DEPS_DEV="$JANUS_BUILD_DEPS_DEV libmicrohttpd-dev"; else export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --disable-rest"; fi
 if [ $JANUS_WITH_DATACHANNELS = "0" ]; then export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --disable-data-channels"; fi
 if [ $JANUS_WITH_WEBSOCKETS = "0" ]; then export JANUS_CONFIG_OPTIONS="$JANUS_CONFIG_OPTIONS --disable-websockets"; fi
@@ -97,6 +97,19 @@ if [ $JANUS_WITH_RABBITMQ = "1" ]; then
     cmake --build . --target install
 fi
 
+# Install doxgen binaries
+if [ $JANUS_WITH_DOCS = "1" ]; then
+    curl -fSL http://ftp.de.debian.org/debian/pool/main/c/checkinstall/checkinstall_1.6.2+git20170426.d24a630-2~bpo10+1_amd64.deb -o ${BUILD_SRC}/checkinstall.deb
+    echo "ce3fec00c5129dca445d759bbe5996b8f51cb4fb68744ca4c1c41c04f38aa9a5 checkinstall.deb" | sha256sum -c -;
+    dpkg -i ${BUILD_SRC}/checkinstall.deb
+    curl -fSL https://downloads.sourceforge.net/project/doxygen/rel-1.8.11/doxygen-1.8.11.linux.bin.tar.gz -o ${BUILD_SRC}/doxygen-1.8.11.linux.bin.tar.gz
+    echo "26230cdcd454965c404251450e37c5a220add8f6e5b839a909175d50fd5be4d6 doxygen-1.8.11.linux.bin.tar.gz" | sha256sum -c -;
+    tar xzf ${BUILD_SRC}/doxygen-1.8.11.linux.bin.tar.gz -C ${BUILD_SRC}
+    cd ${BUILD_SRC}/doxygen-1.8.11
+    ./configure
+    checkinstall -y
+fi
+
 # build janus-gateway
 git clone https://github.com/meetecho/janus-gateway.git ${BUILD_SRC}/janus-gateway
 if [ $JANUS_WITH_FREESWITCH_PATCH = "1" ]; then curl -fSL https://raw.githubusercontent.com/krull/docker-misc/master/init_fs/tmp/janus_sip.c.patch -o ${BUILD_SRC}/janus-gateway/plugins/janus_sip.c.patch && cd ${BUILD_SRC}/janus-gateway/plugins && patch < janus_sip.c.patch; fi
@@ -118,6 +131,11 @@ if [ $JANUS_WITH_DATACHANNELS = "1" ]; then rm -rf usrsctp; fi
 if [ $JANUS_WITH_WEBSOCKETS = "1" ]; then rm -rf libwebsockets; fi
 if [ $JANUS_WITH_MQTT = "1" ]; then rm -rf paho.mqtt.c; fi
 if [ $JANUS_WITH_RABBITMQ = "1" ]; then rm -rf rabbitmq-c; fi
+if [ $JANUS_WITH_DOCS = "1" ]; then
+    rm checkinstall.deb
+    rm -rf doxygen-1.8.11
+    DEBIAN_FRONTEND=noninteractive apt-get -y --auto-remove purge checkinstall doxygen
+fi
 rm -rf \
         v${JANUS_LIBSRTP_VERSION}.tar.gz \
         libsrtp-${JANUS_LIBSRTP_VERSION} \
