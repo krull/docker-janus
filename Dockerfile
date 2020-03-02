@@ -1,6 +1,6 @@
 ############################################################
 # Dockerfile - Janus Gateway on Debian Buster
-# https://github.com/krull/docker-janus
+# https://github.com/jemmic/docker-janus
 ############################################################
 
 # set base image debian buster with minimal packages installed
