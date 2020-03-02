@@ -38,6 +38,7 @@ make install
 if [ $JANUS_WITH_BORINGSSL = "1" ]; then
     git clone https://boringssl.googlesource.com/boringssl ${BUILD_SRC}/boringssl
     cd ${BUILD_SRC}/boringssl
+    git checkout ${JANUS_BORINGSSL_VERSION}
     sed -i s/" -Werror"//g CMakeLists.txt
     mkdir -p ${BUILD_SRC}/boringssl/build
     cd ${BUILD_SRC}/boringssl/build
@@ -54,6 +55,7 @@ fi
 if [ $JANUS_WITH_DATACHANNELS = "1" ]; then
     git clone https://github.com/sctplab/usrsctp ${BUILD_SRC}/usrsctp
     cd ${BUILD_SRC}/usrsctp
+    git checkout ${JANUS_USRSCTP_VERSION}
     ./bootstrap
     ./configure --prefix=/usr
     make
@@ -77,6 +79,7 @@ fi
 if [ $JANUS_WITH_MQTT = "1" ]; then
     git clone https://github.com/eclipse/paho.mqtt.c.git ${BUILD_SRC}/paho.mqtt.c
     cd ${BUILD_SRC}/paho.mqtt.c
+    git checkout ${JANUS_PAHO_MQTT_VERSION}
     make
     make install
 fi
@@ -85,6 +88,7 @@ fi
 if [ $JANUS_WITH_RABBITMQ = "1" ]; then
     git clone https://github.com/alanxz/rabbitmq-c ${BUILD_SRC}/rabbitmq-c
     cd ${BUILD_SRC}/rabbitmq-c
+    git checkout ${JANUS_RABBITMQ_VERSION}
     git submodule init
     git submodule update
     autoreconf -i
