@@ -4,7 +4,7 @@
 ############################################################
 
 # set base image debian jessie
-FROM debian:jessie
+FROM debian:bookworm-20231009
 
 # file maintainer author
 MAINTAINER brendan jocson <brendan@jocson.eu>
